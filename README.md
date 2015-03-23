@@ -23,5 +23,3 @@ $ sbt
 Notes: 
 
 * `**` represents `pow`
-
-
