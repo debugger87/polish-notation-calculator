@@ -9,16 +9,16 @@ trait Maths {
 }
 
 class PolishCalculator extends JavaTokenParsers with Maths {
-  def expr:   Parser[Float] = rep(operator ~ term) ^^ {
+  def expr: Parser[Float] = rep(operator ~ term) ^^ {
     case terms =>
       var stack  = List.empty[Float]
       var firstOp: (Float, Float) => Float = add
-      terms.foreach(t =>
+      terms.reverse.foreach(t =>
         t match {
           case op ~ nums => firstOp = op; stack = reduce(nums ++ stack, op)
         }
       )
-      stack.reduceLeft((x, y) => firstOp(y, x))
+      stack.reduceLeft((x, y) => firstOp(x, y))
   }
 
   def term: Parser[List[Float]] = rep(factor)
@@ -33,8 +33,8 @@ class PolishCalculator extends JavaTokenParsers with Maths {
   }
 
   def reduce(nums: List[Float], op: (Float, Float) => Float): List[Float] = {
-    val result = nums.reverse match {
-      case x :: y :: xs => xs ++ List(op(y, x))
+    val result = nums match {
+      case x :: y :: xs => List(nums.reduceLeft((x, y) => op(x, y)))
       case List(x)      => List(x)
       case _            => List.empty[Float]
     }
