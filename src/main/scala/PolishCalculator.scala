@@ -40,6 +40,8 @@ class PolishCalculator extends JavaTokenParsers with Maths {
     }
     result
   }
+
+  def calculate(expression: String) = parseAll(expr, expression)
 }
 
 class InfixCalculator extends JavaTokenParsers with Maths {
@@ -57,10 +59,21 @@ class InfixCalculator extends JavaTokenParsers with Maths {
     case "*"  => mul
     case "/"  => div
   }
+
+  def calculate(expression: String) = parseAll(expr, expression)
 }
 
-object Calculator extends PolishCalculator with App{
-  def calculate(expression: String) = parseAll(expr, expression)
+object Calculator extends PolishCalculator with App {
+  val polish = new PolishCalculator
+  val infix = new InfixCalculator
 
-  println(calculate(args(0)).get)
+  if (args.length < 2) {
+    println("input the type of calculator: polish or infix, and your expression!")
+  }
+
+  if (args(0).toLowerCase == "polish") {
+    println(polish.calculate(args(1)).get)
+  } else if (args(0).toLowerCase == "infix") {
+    println(infix.calculate(args(1)).get)
+  }
 }

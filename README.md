@@ -10,14 +10,18 @@ sbt assembly
 ### Run
 
 ```
-java -cp target/scala-2.10/polish-notation-calculator-assembly-1.0.jar Calculator "/ (** 2 3) (- 4 2)"
+java -cp target/scala-2.10/polish-notation-calculator-assembly-1.0.jar Calculator "poish" "/ (** 2 3) (- 4 2)"
+
+java -cp target/scala-2.10/polish-notation-calculator-assembly-1.0.jar Calculator "infix" "(2 ** 3) / (4 - 2)"
 ```
 Or
 
 ```
 $ sbt
 
-> run "/ (** 2 3) (- 4 2)"
+> run "polish" "/ (** 2 3) (- 4 2)"
+
+> run "infix" "(2 ** 3) / (4 - 2)"
 ```
 
 Notes: 
