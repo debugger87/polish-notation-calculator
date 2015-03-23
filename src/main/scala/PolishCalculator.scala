@@ -42,6 +42,23 @@ class PolishCalculator extends JavaTokenParsers with Maths {
   }
 }
 
+class InfixCalculator extends JavaTokenParsers with Maths {
+  def expr: Parser[Float] = term ~ operator ~ term ^^ {
+    case t1 ~ op ~ t2 => op(t1, t2)
+  }
+
+  def term: Parser[Float] = num | "(" ~> expr <~ ")" ^^ (_.toFloat)
+  def num: Parser[Float] = floatingPointNumber ^^ (_.toFloat)
+
+  def operator: Parser[(Float, Float) => Float] = ("**" | "*" | "/" | "+" | "-") ^^ {
+    case "**" => pow
+    case "+"  => add
+    case "-"  => sub
+    case "*"  => mul
+    case "/"  => div
+  }
+}
+
 object Calculator extends PolishCalculator with App{
   def calculate(expression: String) = parseAll(expr, expression)
 
