@@ -11,7 +11,7 @@ trait Maths {
 class PolishCalculator extends JavaTokenParsers with Maths {
   def expr: Parser[Float] = rep(operator ~ term) ^^ {
     case terms =>
-      var stack  = List.empty[Float]
+      var stack = List.empty[Float]
       var firstOp: (Float, Float) => Float = add
       terms.reverse.foreach(t =>
         t match {
